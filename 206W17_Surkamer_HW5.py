@@ -60,26 +60,25 @@ phrase_to_find = input("Enter phrase for twitter to search for:")
 def get_user_tweets(phrase):
 	unique_id = "twitter_{}".format(phrase)
 	if unique_id in CACHE_DICTION:
-		print ('using cached data')
+		print ('using cached data for', phrase)
 		twitter_results = CACHE_DICTION[unique_id]
-		return twitter_results
 	else:
-		print ('fetching data from internet')
+		print ('fetching data from internet for', phrase)
 		twitter_results = api.user_timeline(phrase)
 		CACHE_DICTION[unique_id] = twitter_results
 		r = open(CACHE_file, 'w')
 		r.write(json.dumps(CACHE_DICTION))
-		r.close
-		return twitter_results
-		
-twitter_results = get_user_tweets(phrase_to_find)
-tweets = []
-for tweet in twitter_results:
-	tweets.append((tweet['text'], tweet['created_at']))
-for elem in tweets[:3]:
-	print("TEXT:", elem[0])
-	print("CREATED AT:", elem[-1])
-	print('\n')
+		r.close()
+	tweets = []
+	for tweet in twitter_results:
+		tweets.append((tweet['text'], tweet['created_at']))
+	return tweets[:3]
+
+twitter_3_posts = get_user_tweets(phrase_to_find)
+for elem in twitter_3_posts:
+		print("TEXT:", elem[0])
+		print("CREATED AT:", elem[-1])
+		print('\n')
 	
 #### Recommended order of tasks: ####
 ## 1. Set up the caching pattern start -- the dictionary and the try/except statement shown in class.
