@@ -36,14 +36,14 @@ import twitter_info
 ## **** If you choose not to do that, we strongly advise using authentication information for an 'extra' Twitter account you make just for this class, and not your personal account, because it's not ideal to share your authentication information for a real account that you use frequently.
 
 ## Get your secret values to authenticate to Twitter. You may replace each of these with variables rather than filling in the empty strings if you choose to do the secure way for 50 EC points
-# consumer_key = "FKO4O91gmjtTYrNyN8XgwTtR0"
-# consumer_secret = "cbb9DBxdDNcXm7ZemuwW2keml8AL3fP6xlk7ybp1PgLmVm7PpW"
-# access_token = "2315329119-FPll12910m6LNdBbWMM4Dxgm5Gl15YlO6DQzb1f"
-# access_token_secret = "k40LrCsPhUWJDe59zjcgK1p9cy1UMVgZOU8XF4ERCbO8N"
+consumer_key = twitter_info.consumer_key 
+consumer_secret = twitter_info.consumer_secret 
+access_token = twitter_info.access_token 
+access_token_secret = twitter_info.access_token_secret
 
 ## Set up your authentication to Twitter
-auth = tweepy.OAuthHandler(twitter_info.consumer_key, twitter_info.consumer_secret)
-auth.set_access_token(twitter_info.access_token, twitter_info.access_token_secret)
+auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth, parser=tweepy.parsers.JSONParser()) # Set up library to grab stuff from twitter with your authentication, and return it in a JSON-formatted way
 
 ## Write the rest of your code here!
@@ -71,6 +71,16 @@ def get_user_tweets(phrase):
 		r.write(json.dumps(CACHE_DICTION))
 		r.close
 		return twitter_results
+		
+twitter_results = get_user_tweets(phrase_to_find)
+tweets = []
+for tweet in twitter_results:
+	tweets.append((tweet['text'], tweet['created_at']))
+for elem in tweets[:3]:
+	print("TEXT:", elem[0])
+	print("CREATED AT:", elem[-1])
+	print('\n')
+	
 #### Recommended order of tasks: ####
 ## 1. Set up the caching pattern start -- the dictionary and the try/except statement shown in class.
 ## 2. Write a function to get twitter data that works with the caching pattern, so it either gets new data or caches data, depending upon what the input to search for is. You can model this off the class exercise from Tuesday.
